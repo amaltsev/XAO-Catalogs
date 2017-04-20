@@ -1,9 +1,9 @@
-package testcases::Catalogs;
+package testcases::Catalogs::Catalogs;
 use strict;
 use XAO::Objects;
 use Error qw(:try);
 
-use base qw(testcases::base);
+use base qw(testcases::Catalogs::base);
 
 sub test_everything {
     my $self=shift;

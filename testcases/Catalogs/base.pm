@@ -1,4 +1,4 @@
-package testcases::base;
+package testcases::Catalogs::base;
 use strict;
 use CGI;
 use IO::File;
