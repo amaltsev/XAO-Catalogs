@@ -32,7 +32,7 @@ use XAO::Projects;
 use base XAO::Objects->load(objname => 'Atom');
 
 use vars qw($VERSION);
-$VERSION='1.03';
+$VERSION='1.04';
 
 ###############################################################################
 

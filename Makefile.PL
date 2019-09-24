@@ -16,7 +16,7 @@ if(open(F,'.config')) {
 while(!$d{test_dsn}) {
     print <<EOT;
 
-XAO Catalogs will need access to a XAO::FS database in order to run tests.
+XAO Content will need access to a XAO::FS database in order to run tests.
 That database will be COMPLETELY DESTROYED AND OVERRIDEN every time you
 run 'make test'.
 
@@ -26,19 +26,13 @@ Please enter access information (brackets contain default values), entering
 'none' will disable tests:
 
 EOT
-    my $dsn='none';
-    print "DSN: [$dsn] ";
-    chomp(my $str=<STDIN>);
-    if($str) {
-        if($str =~ /^\s*(OS:(\w+):(\w+)(;.*?)?)\s*$/) {
-            $dsn=$1;
-        }
-        else {
-            die "Incorrect DSN entered!\n";
-        }
-    }
+    my $dsn=prompt('DSN:','none');
+
+    $dsn eq 'none' || $dsn =~ /^\s*(OS:(\w+):(\w+)(;.*?)?)\s*$/ ||
+        die "Incorrect DSN entered!\n";
+
     my $user='';
-    my $password='';
+    my $pass='';
     my $confirm='n';
 
     if($dsn eq 'none') {
@@ -50,17 +44,9 @@ Ok, tests will be skipped per your request.
 EOT
     }
     else {
-        chomp($user=`whoami`);
-        print "User name: [$user] ";
-        chomp($str=<STDIN>);
-        if($str && $str=~/^\s*(.*?)\s*$/) {
-            $user=$1;
-        }
-        print "Password: [$password] ";
-        chomp($str=<STDIN>);
-        if($str && $str=~/^\s*(.*?)\s*$/) {
-            $password=$1;
-        }
+        chomp(my $default_user=`whoami`);
+        $user=prompt('User name:',$default_user);
+        $pass=prompt('Password:','');
 
         print <<EOT;
 
@@ -68,12 +54,11 @@ Here is what will be used to connect to the test database
 (and DESTROY it):
    DSN:      $dsn
    User:     $user
-   Password: $password
+   Password: $pass
 
 EOT
-        $|=1;
-        print "Does it make sense ? [Y/n] y\b";
-        chomp($confirm=<STDIN>);
+
+        $confirm=prompt('Does it make sense ?','y');
     }
 
     if(!$confirm || lc($confirm)=~/y/) {
@@ -83,13 +68,12 @@ EOT
 ## Makefile.PL' if removed.
 \$d{test_dsn}='$dsn';
 \$d{test_user}='$user';
-\$d{test_password}='$password';
+\$d{test_password}='$pass';
 EOT
         last;
     }
 }
 
-##
 # Creating Makefile
 #
 WriteMakefile(

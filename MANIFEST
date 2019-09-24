@@ -16,6 +16,6 @@ sample.xml
 scripts/xao-ifilter-sample
 scripts/xao-import-map
 test.pl
-testcases/Catalogs/Catalogs.pm
-testcases/Catalogs/base.pm
-testcases/testroot/projects/test/objects/Config.pm
+t/testcases/Catalogs/base.pm
+t/testcases/Catalogs/Catalogs.pm
+t/xao/projects/test/objects/Config.pm
